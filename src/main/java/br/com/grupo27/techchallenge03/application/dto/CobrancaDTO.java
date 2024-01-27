@@ -1,11 +1,8 @@
 package br.com.grupo27.techchallenge03.application.dto;
 
-public record PagamentoDTO(
-    Long id,
-    String idCobranca,
-    String idtx,
+
+public record CobrancaDTO(
     Long idPedido,
-    Boolean pago,
     String cliente,
     String valor
 ) {

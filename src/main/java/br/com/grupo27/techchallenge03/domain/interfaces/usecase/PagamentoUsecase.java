@@ -2,9 +2,9 @@ package br.com.grupo27.techchallenge03.domain.interfaces.usecase;
 
 import java.util.List;
 
-import br.com.grupo27.techchallenge03.application.dto.PedidoDTO;
-import br.com.grupo27.techchallenge03.domain.model.Cliente;
-import br.com.grupo27.techchallenge03.domain.model.Pedido;
+import br.com.grupo27.techchallenge03.application.dto.CobrancaDTO;
+import br.com.grupo27.techchallenge03.application.dto.PagamentoDTO;
+import br.com.grupo27.techchallenge03.domain.model.Pagamento;
 
 public interface PagamentoUsecase {
     
@@ -12,8 +12,8 @@ public interface PagamentoUsecase {
 
     Boolean verificaStatusPagamento(Long id);
 
-    List<PedidoDTO> findPedidosByStatusPagamento(boolean pago);
+    // List<PedidoDTO> findPedidosByStatusPagamento(boolean pago);
 
     String geraQrCodePedido(Long id);
-    void gerarCobranca(PedidoDTO pedido, Cliente cliente);
+    Pagamento gerarCobranca(CobrancaDTO cobrancaDTODTO);
 }

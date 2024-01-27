@@ -7,6 +7,8 @@ public interface PagamentoGateway {
     
     Pagamento savePagamento(Pagamento pagamento);
 
+    Pagamento updatePagamento(Pagamento pagamento);
+
     Pagamento findPagamentoByIdPedido(Long id);
 
 }

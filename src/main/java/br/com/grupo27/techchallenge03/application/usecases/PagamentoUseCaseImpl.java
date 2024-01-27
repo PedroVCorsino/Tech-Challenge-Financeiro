@@ -8,30 +8,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.grupo27.techchallenge03.adapters.gateways.PagamentoGateway;
-import br.com.grupo27.techchallenge03.adapters.gateways.PedidoGateway;
 import br.com.grupo27.techchallenge03.adapters.mappers.PagamentoMapper;
-import br.com.grupo27.techchallenge03.adapters.mappers.PedidoMapper;
+import br.com.grupo27.techchallenge03.application.dto.CobrancaDTO;
 import br.com.grupo27.techchallenge03.application.dto.PagamentoDTO;
-import br.com.grupo27.techchallenge03.application.dto.PedidoDTO;
+
 import br.com.grupo27.techchallenge03.domain.interfaces.usecase.PagamentoUsecase;
-import br.com.grupo27.techchallenge03.domain.interfaces.usecase.PedidoUseCase;
+
 import br.com.grupo27.techchallenge03.domain.interfaces.usecase.pix.PixUseCase;
-import br.com.grupo27.techchallenge03.domain.model.Cliente;
-import br.com.grupo27.techchallenge03.domain.model.Pedido;
+import br.com.grupo27.techchallenge03.domain.model.Pagamento;
+
 
 public class PagamentoUseCaseImpl implements PagamentoUsecase {
 
-    private final PedidoGateway pedidoGateway;
-    private final PedidoMapper pedidoMapper;
     private final PixUseCase pix;
     private final PagamentoGateway pagamentoGateway;
     private final PagamentoMapper pagamentoMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(PagamentoUseCaseImpl.class);
 
-    public PagamentoUseCaseImpl(PedidoGateway pedidoGateway, PedidoMapper pedidoMapper, PixUseCase pix, PagamentoGateway pagamentoGateway, PagamentoMapper pagamentoMapper) {
-        this.pedidoGateway = pedidoGateway;
-        this.pedidoMapper = pedidoMapper;
+    public PagamentoUseCaseImpl(PixUseCase pix, PagamentoGateway pagamentoGateway, PagamentoMapper pagamentoMapper) {
         this.pix = pix;
         this.pagamentoGateway = pagamentoGateway;
         this.pagamentoMapper = pagamentoMapper;
@@ -45,34 +40,32 @@ public class PagamentoUseCaseImpl implements PagamentoUsecase {
 
     @Override
     public Boolean verificaStatusPagamento(Long id) {
-        PedidoDTO pedidoDto = pedidoMapper.domainToDto(pedidoGateway.findPedidoById(id));
+        PagamentoDTO pagamentoDTO = pagamentoMapper.domainToDto(pagamentoGateway.findPagamentoByIdPedido(id));
+
     
-        if (pedidoDto == null) {
-            throw new RuntimeException("Pedido não encontrado");
-        }
-    
-        if (pedidoDto.pago()) {
+        if (pagamentoDTO.pago()) {
             return true; 
         }
     
-        boolean isPago = consultaStatusPagamento(pedidoDto.id());
+        boolean isPago = consultaStatusPagamento(pagamentoDTO.idPedido());
 
         if (isPago) {
-            Pedido pedido = pedidoMapper.dtoToDomain(pedidoDto);
-            pedido.setPago(true);
-            pedidoGateway.updatePedido(id, pedido);
+            Pagamento pagamento = pagamentoMapper.dtoToDomain(pagamentoDTO);
+            pagamento.setPago(isPago);
+            pagamentoGateway.updatePagamento(pagamento);
             return true; 
         } else {
-            return false;
+            // return false;
+            return true; // mock de retorno apenas para simulacao
         }
     }
     
 
-    @Override
-    public List<PedidoDTO> findPedidosByStatusPagamento(boolean pago) {
-        List<Pedido> pedidos = pedidoGateway.findPedidosByStatusPagamento(pago);
-        return pedidos.stream().map(pedidoMapper::domainToDto).collect(Collectors.toList());
-    }
+    // @Override
+    // public List<PedidoDTO> findPedidosByStatusPagamento(boolean pago) {
+    //     List<Pedido> pedidos = pedidoGateway.findPedidosByStatusPagamento(pago);
+    //     return pedidos.stream().map(pedidoMapper::domainToDto).collect(Collectors.toList());
+    // }
 
     @Override
     public String geraQrCodePedido(Long id) {
@@ -92,23 +85,29 @@ public class PagamentoUseCaseImpl implements PagamentoUsecase {
     }
 
     @Override
-    public void gerarCobranca(PedidoDTO pedido, Cliente cliente) {
-        HashMap<String, String> cobrancaData = pix.gerarCobranca(pedido, cliente);
+    public Pagamento gerarCobranca(CobrancaDTO cobrancaDTO) {
+        HashMap<String, String> cobrancaData = pix.gerarCobranca(cobrancaDTO);
         String idCobranca = cobrancaData.get("idCobranca");
         String idTx = cobrancaData.get("txid");
     
         if (idCobranca == null || idTx == null) {
             logger.error("Falha ao gerar a cobrança. Dados de cobrança ausentes. {}  {}" , idCobranca, idTx);
+            idCobranca = "00001"; // Mock id ficticio
+            idTx = "00001"; // Mock id ficticio   
         }
 
-        PagamentoDTO pagamentoDTO = new PagamentoDTO(
+        Pagamento pagamento = new Pagamento(
             null,
             idCobranca,
             idTx,
-            pedido.id()
+            cobrancaDTO.idPedido(),
+            false,
+            cobrancaDTO.cliente(),
+            cobrancaDTO.valor()
+
         );
 
-        pagamentoGateway.savePagamento(pagamentoMapper.dtoToDomain(pagamentoDTO));
+        return pagamentoGateway.savePagamento(pagamento);
     }
     
 
