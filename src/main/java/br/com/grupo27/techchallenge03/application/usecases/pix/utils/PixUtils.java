@@ -2,6 +2,7 @@ package br.com.grupo27.techchallenge03.application.usecases.pix.utils;
 
 import org.json.JSONObject;
 
+import br.com.grupo27.techchallenge03.application.dto.CobrancaDTO;
 import br.com.grupo27.techchallenge03.external.config.Credenciais;
 
 public class PixUtils {
@@ -20,13 +21,13 @@ public class PixUtils {
         return options;
     }
 
-    public static JSONObject construirCorpoCobranca(Long id, String cpf, String nome) {
+    public static JSONObject construirCorpoCobranca(CobrancaDTO cobrancaDTO) {
         JSONObject body = new JSONObject();
         body.put("calendario", new JSONObject().put("expiracao", 3600));
-        body.put("devedor", new JSONObject().put("cpf", cpf).put("nome", nome));
-        body.put("valor", new JSONObject().put("original", "0.01"));
+        body.put("devedor", new JSONObject().put("cpf", cobrancaDTO.cliente()));
+        body.put("valor", new JSONObject().put("original", cobrancaDTO.valor())); 
         body.put("chave", CHAVE_PIX);
-        body.put("solicitacaoPagador", "Cobrança para o pedido id:" + id);
+        body.put("solicitacaoPagador", "Cobrança para o pedido id:" + cobrancaDTO.idPedido());
         return body;
     }
 }

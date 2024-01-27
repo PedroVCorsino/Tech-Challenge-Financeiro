@@ -4,22 +4,22 @@ import java.util.Objects;
 
 public class ValidadorCPF {
 
-  private String valor;
+  private String cpf;
 
   private ValidadorCPF() {
-    this.valor = "11111111111";
+    this.cpf = "11111111111";
   }
 
-  public ValidadorCPF(String valor) {
-      if (valor == null || (!valor.isEmpty() && (!valor.matches("\\d{11}") || !validarDigitosVerificadores(valor)))) {
+  public ValidadorCPF(String cpf) {
+      if (cpf == null || (!cpf.isEmpty() && (!cpf.matches("\\d{11}") || !validarDigitosVerificadores(cpf)))) {
           throw new IllegalArgumentException("CPF inválido");
       }
-      this.valor = valor;
+      this.cpf = cpf;
   }
 
 
   public String getValor() {
-    return valor;
+    return cpf;
   }
 
   @Override
@@ -27,32 +27,32 @@ public class ValidadorCPF {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ValidadorCPF cpf = (ValidadorCPF) o;
-    return valor.equals(cpf.valor);
+    return cpf.equals(cpf.cpf);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(valor);
+    return Objects.hash(cpf);
   }
 
   @Override
     public String toString() {
-        return valor;
+        return cpf;
     }
 
-  public static boolean validarDigitosVerificadores(String valor) {
+  public static boolean validarDigitosVerificadores(String cpf) {
     // Verifica se o CPF não tem uma sequência de números iguais
-    if (valor.equals("00000000000")
-        || valor.equals("11111111111")
-        || valor.equals("22222222222")
-        || valor.equals("33333333333")
-        || valor.equals("44444444444")
-        || valor.equals("55555555555")
-        || valor.equals("66666666666")
-        || valor.equals("77777777777")
-        || valor.equals("88888888888")
-        || valor.equals("99999999999")
-        || (valor.length() != 11)) return (false);
+    if (cpf.equals("00000000000")
+        || cpf.equals("11111111111")
+        || cpf.equals("22222222222")
+        || cpf.equals("33333333333")
+        || cpf.equals("44444444444")
+        || cpf.equals("55555555555")
+        || cpf.equals("66666666666")
+        || cpf.equals("77777777777")
+        || cpf.equals("88888888888")
+        || cpf.equals("99999999999")
+        || (cpf.length() != 11)) return (false);
 
     char dig10, dig11;
     int soma, i, r, num, peso;
@@ -61,7 +61,7 @@ public class ValidadorCPF {
     soma = 0;
     peso = 10;
     for (i = 0; i < 9; i++) {
-      num = (int) (valor.charAt(i) - 48);
+      num = (int) (cpf.charAt(i) - 48);
       soma = soma + (num * peso);
       peso = peso - 1;
     }
@@ -74,7 +74,7 @@ public class ValidadorCPF {
     soma = 0;
     peso = 11;
     for (i = 0; i < 10; i++) {
-      num = (int) (valor.charAt(i) - 48);
+      num = (int) (cpf.charAt(i) - 48);
       soma = soma + (num * peso);
       peso = peso - 1;
     }
@@ -84,7 +84,7 @@ public class ValidadorCPF {
     else dig11 = (char) (r + 48);
 
     // Verifica se os dígitos calculados conferem com os dígitos informados
-    if ((dig10 == valor.charAt(9)) && (dig11 == valor.charAt(10))) return (true);
+    if ((dig10 == cpf.charAt(9)) && (dig11 == cpf.charAt(10))) return (true);
     else return (false);
   }
 }

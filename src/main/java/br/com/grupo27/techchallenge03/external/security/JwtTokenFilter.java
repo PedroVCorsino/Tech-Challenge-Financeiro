@@ -25,7 +25,7 @@ import java.util.List;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private static final String COGNITO_JWKS_URL = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_wY8iyWcKy/.well-known/jwks.json";
+    private static final String COGNITO_JWKS_URL = "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_acioiSPS0/.well-known/jwks.json";
     private final JwkProvider jwkProvider;
 
     public JwtTokenFilter() throws MalformedURLException {

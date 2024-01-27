@@ -2,11 +2,12 @@ package br.com.grupo27.techchallenge03.application.usecases.pix;
 
 import br.com.efi.efisdk.EfiPay;
 import br.com.efi.efisdk.exceptions.EfiPayException;
-import br.com.grupo27.techchallenge03.application.dto.PedidoDTO;
+import br.com.grupo27.techchallenge03.application.dto.CobrancaDTO;
+import br.com.grupo27.techchallenge03.application.dto.PagamentoDTO;
 import br.com.grupo27.techchallenge03.application.usecases.pix.utils.PixUtils;
 import br.com.grupo27.techchallenge03.domain.interfaces.usecase.pix.PixGeraCobrancaUseCase;
-import br.com.grupo27.techchallenge03.domain.model.Cliente;
-import br.com.grupo27.techchallenge03.domain.model.Pedido;
+import br.com.grupo27.techchallenge03.domain.model.Pagamento;
+import br.com.grupo27.techchallenge03.domain.valuesObjects.ValidadorCPF;
 import br.com.grupo27.techchallenge03.external.config.Credenciais;
 
 import org.json.JSONObject;
@@ -26,8 +27,8 @@ public class PixGeraCobrancaUseCaseImpl implements PixGeraCobrancaUseCase{
     }
 
     @Override
-    public HashMap<String, String> registraCobranca(PedidoDTO pedido, Cliente cliente){
-        JSONObject response = gerarCobranca(pedido, cliente);
+    public HashMap<String, String> registraCobranca(CobrancaDTO cobrancaDTO){
+        JSONObject response = gerarCobranca(cobrancaDTO);
         String id = extrairIdDoResponse(response, "id");
         String txid = extrairTxIdDoResponse(response, "txid");
         HashMap<String, String> ids =  new HashMap<>();
@@ -36,9 +37,9 @@ public class PixGeraCobrancaUseCaseImpl implements PixGeraCobrancaUseCase{
         return ids;
     }
 
-    private JSONObject gerarCobranca(PedidoDTO pedido, Cliente cliente) {
+    private JSONObject gerarCobranca(CobrancaDTO cobrancaDTO) {
         JSONObject options = configurarOpcoes();
-        JSONObject body = construirCorpoCobranca(pedido, cliente);
+        JSONObject body = construirCorpoCobranca(cobrancaDTO);
 
         try {
             EfiPay efi = new EfiPay(options);
@@ -78,7 +79,7 @@ public class PixGeraCobrancaUseCaseImpl implements PixGeraCobrancaUseCase{
         return PixUtils.configurarOpcoes(credentials);
     }
 
-    private JSONObject construirCorpoCobranca(PedidoDTO pedido, Cliente cliente) {
-        return PixUtils.construirCorpoCobranca(pedido.id(), cliente.getCpf().toString(), cliente.getNome());
+    private JSONObject construirCorpoCobranca(CobrancaDTO cobrancaDTO) {
+        return PixUtils.construirCorpoCobranca(cobrancaDTO);
     }
 }

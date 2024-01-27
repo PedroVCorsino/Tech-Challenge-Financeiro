@@ -15,7 +15,7 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .info(new Info().title("Tech-Challenge")
-                                .description("Desafio desenvolvido para a pós em Software Architecture da FIAP")
+                                .description("Microserviço responsavel por realizar as consultas e cobranças de pedidos")
                                 .version("3.0"))
                 .addSecurityItem(new SecurityRequirement().addList(securitySchemeName))
                 .components(new io.swagger.v3.oas.models.Components()
