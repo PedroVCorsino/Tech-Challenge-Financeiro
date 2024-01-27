@@ -1,13 +1,9 @@
 # Tech-Challenge
 
-Desafio desenvolvido com Kubernets e Clean-Architecture para a fase02 do curso de Software Architecture da FIAP Pós Tech.
+Desafio desenvolvido para a fase04 do curso de Software Architecture da FIAP Pós Tech.
 
 ## Versão
 2.2 [Dockerhub](https://hub.docker.com/repository/docker/pedrovcorsino/tech_challenge/tags "Go to Dockerhub")
-
-## Índice
-<a href="#tecnologias">Tecnologias</a> 
-<a href="#autores">Autores</a>
 
 ## Tecnologias
 <div style="display: inline_block"><br>
@@ -17,11 +13,25 @@ Desafio desenvolvido com Kubernets e Clean-Architecture para a fase02 do curso d
     <img align="center" alt="kubernets" height="50" width="80" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain-wordmark.svg">  
 </div>
 
-## Banco de dados
+## Escolha das tecnologias
+### Linguagem
+- Java
+    - Java escolha estratégica para aplicações que demandam escalabilidade, robustez e alta performance. Java é uma linguagem robusta e eficiente, ideal para lidar com o crescimento e a complexidade de aplicações empresariais. Sua capacidade de gerenciar cargas pesadas e variadas de trabalho assegura uma base sólida para o backend.
 
+### Framework
+- SpringBoot
+  - O Spring Boot, um framework robusto baseado em Java, contribui significativamente para essa segurança. Ele oferece recursos como autenticação e autorização integradas, proteção contra ataques comuns como CSRF e XSS, e uma arquitetura que incentiva práticas seguras de programação. Além disso, a comunidade ativa e os frequentes updates garantem que o Spring Boot permaneça na vanguarda da segurança em aplicações web.
 
+### Repositorio de dados
+- Postgres
+    - O PostgreSQL, um sistema de gerenciamento de banco de dados avançado, complementa esta configuração com sua confiabilidade de alto nível. Ele oferece recursos como controle de acesso baseado em função, criptografia de dados e integridade transacional, essenciais para garantir que os dados sejam armazenados e manipulados de forma segura. Sua arquitetura robusta e sistema de backup e recuperação de dados asseguram que a integridade e a disponibilidade dos dados sejam mantidas, mesmo em cenários de falha.
+
+Numa aplicação com foco em pagamentos a segurança deve ser a principal preocupação. Juntos, Java, Spring Boot e PostgreSQL formam um conjunto de tecnologias que não só promove uma base sólida e segura para aplicações, mas também assegura a confiabilidade em longo prazo. Essa combinação é ideal para desenvolver aplicações onde segurança e confiabilidade não são apenas requisitos, mas prioridades absolutas.
 
 ## Documentação do sistema (DDD) utilizando a linguagem ubíqua.
+### Contextos delimitados
+- Pedido (Realização do pedido e pagamento) 
+  ![image](https://github.com/PedroVCorsino/Tech-Challenge/assets/61948860/0c627219-8fb8-4bdc-b88a-3d0db6087973)
 
 ### Domínios
 - Subdomínio Principal:
@@ -32,15 +42,6 @@ Desafio desenvolvido com Kubernets e Clean-Architecture para a fase02 do curso d
     - Gestão de estoque,
     - funcionários, clientes,
     - estratégias de marketing
-
-
-### Contextos delimitados
-
-- Pedido (Realização do pedido e pagamento) 
-  ![image](https://github.com/PedroVCorsino/Tech-Challenge/assets/61948860/0c627219-8fb8-4bdc-b88a-3d0db6087973)
-
-- Cozinha (Preparação e entrega do pedido)
-  ![image](https://github.com/PedroVCorsino/Tech-Challenge/assets/61948860/823b0576-5524-4397-9411-6805505dfb85)
 
 ### Dicionário de linguagem ubíqua
 - Identificação: Pode se identificar usando CPF, nome, e-mail ou não se identificar.
