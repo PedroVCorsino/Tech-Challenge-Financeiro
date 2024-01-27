@@ -1,20 +1,17 @@
-name: "App Build"
+name: Feature Build and Test
+
 on:
   push:
     branches:
       - feature/*
 
-  pull_request:
-    branches:
-      - develop
-      - main
 jobs:
   build:
-    name: Build and Test
+    name: Build e Teste
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout do código
         uses: actions/checkout@v3
 
       - name: Set up JDK 17
@@ -24,8 +21,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build with Maven
+      - name: Build com Maven
         run: mvn -B clean install
 
-      - name: Run tests
+      - name: Run testes
         run: mvn test
