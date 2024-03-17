@@ -17,7 +17,7 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final String BASE_URL = "https://br75f66nkb.execute-api.us-east-1.amazonaws.com/Prod";
+    private final String BASE_URL = "https://0ge70f466e.execute-api.us-east-1.amazonaws.com/Prod/";
     
     @Override
     public ResponseEntity<String> authenticate(UserDTO userDTO) {

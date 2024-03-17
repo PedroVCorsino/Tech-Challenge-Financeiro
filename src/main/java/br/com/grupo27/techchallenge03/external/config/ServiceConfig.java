@@ -15,6 +15,7 @@ import br.com.grupo27.techchallenge03.application.usecases.pix.PixConsultaPagame
 import br.com.grupo27.techchallenge03.application.usecases.pix.PixGeraCobrancaUseCaseImpl;
 import br.com.grupo27.techchallenge03.application.usecases.pix.PixGeraQRCodeUseCaseImpl;
 import br.com.grupo27.techchallenge03.application.usecases.pix.PixUseCaseImpl;
+import br.com.grupo27.techchallenge03.domain.interfaces.services.rabbitmq.PedidoAsyncService;
 import br.com.grupo27.techchallenge03.domain.interfaces.usecase.PagamentoUsecase;
 
 import br.com.grupo27.techchallenge03.domain.interfaces.usecase.pix.PixConsultaCobrancaUseCase;
@@ -32,8 +33,8 @@ public class ServiceConfig {
     }
 
     @Bean 
-    public PagamentoUseCaseImpl pagamentoUseCase(PixUseCase pix, PagamentoGateway pagamentoGateway, PagamentoMapper pagamentoMapper){
-        return new PagamentoUseCaseImpl(pix, pagamentoGateway, pagamentoMapper);
+    public PagamentoUseCaseImpl pagamentoUseCase(PixUseCase pix, PagamentoGateway pagamentoGateway, PagamentoMapper pagamentoMapper, PedidoAsyncService pedidoAsyncService){
+        return new PagamentoUseCaseImpl(pix, pagamentoGateway, pagamentoMapper, pedidoAsyncService);
     }
 
     @Bean
